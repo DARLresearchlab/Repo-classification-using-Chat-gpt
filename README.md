@@ -70,7 +70,7 @@ For larger batches:
 
 ---
 
-## Automation
+## Automation 
 
 To automate classification:
 1. **API-Based Automation**: Used ChatGPT-3.5 Turbo.
@@ -81,5 +81,6 @@ To automate classification:
 - `Funding_models_classifications_Selenium`: Automation using Selenium.
 
 ---
+## Note 
 
-
+- One of the challenges we encountered was related to sending multiple project prompts in the same ChatGPT session. This often resulted in inappropriate responses for the classification of funding models. For instance, batches of projects would sometimes not be classified under any of the predefined funding models, leading to inconsistencies. To address this, we ensured that each batch was submitted in a new, isolated chat session, which helped mitigate the issue and improve classification accuracy.
