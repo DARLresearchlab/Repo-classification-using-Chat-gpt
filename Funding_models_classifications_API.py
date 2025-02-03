@@ -22,7 +22,7 @@ def query_chatgpt(prompt):
 
 # Read Excel input with error handling
 try:
-    input_file = "/Users/winniewei/Downloads/Projects_testingAI.xlsx"
+    input_file = "your excel file path link here"
     df = pd.read_excel(input_file)
 except FileNotFoundError:
     print(f"Error: Input file not found at {input_file}")
@@ -92,7 +92,7 @@ for _, row in df.iterrows():
 
 # Save results to Excel
 try:
-    output_file = "/Users/winniewei/Downloads/automatic_models.xlsx"
+    output_file = "your output file path here"
     output_df = pd.DataFrame(results)
     output_df.to_excel(output_file, index=False)
     print(f"Output saved to {output_file}")
