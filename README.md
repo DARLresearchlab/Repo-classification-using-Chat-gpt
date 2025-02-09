@@ -14,10 +14,10 @@ Next, we analyzed **600 projects** using ChatGPT for two distinct AI scenarios:
 1. One with a framework providing specific classification key terms for ChatGPT to select from.
 2. Another without the framework, where ChatGPT generated classifications independently before sorting them into given categories.
 
-We compared the classification results from both scenarios with manually collected classifications of over 600 OSS projects from the summer. The framework-based scenario resulted in a slightly lower mismatch rate with the manually collected classifications:
-- **Funding model mismatch rate**: 73%.
-- **Governance model mismatch rate**: 95%.
-- **Project type mismatch rate**: 69%.
+We compared the classification results from both scenarios with manually collected classifications of over 600 OSS projects from the summer. The framework-based scenario resulted in a following accuracy rates:
+- **Funding model accuracy rate**: 73%.
+- **Governance model accuracy rate**: 95%.
+- **Project type accuracy rate**: 69%.
 
 ---
 
@@ -43,7 +43,7 @@ We used **ChatGPT-4** to classify the funding models of **516 manually collected
 - We reiterated the instructions, which improved accuracy upon reclassification.
 - Weighted dual classifications were used, allowing certain projects to have multiple classifications.
 
-The AI classification accuracy compared to manually collected funding models was **47.4%** (Figure 2).
+The AI classification accuracy was **47.4%** (Figure 2).
 
 ---
 
