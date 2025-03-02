@@ -4,12 +4,12 @@ import os
 import time
 
 # Load API key securely
-openai.api_key = "your_api_key_here"
+openai.api_key = "YOUR API KEY HERE"
 
 def query_chatgpt(prompt):
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt}
@@ -20,10 +20,10 @@ def query_chatgpt(prompt):
         print(f"Error interacting with ChatGPT: {e}")
         return "No response"
 
-# Read Excel input with error handling
+# Read CSV input with error handling
 try:
-    input_file = "your excel file path link here"
-    df = pd.read_excel(input_file)
+    input_file = "YOUR CSV INPUT FILE PATH HERE"
+    df = pd.read_csv(input_file)
 except FileNotFoundError:
     print(f"Error: Input file not found at {input_file}")
     exit()
@@ -41,13 +41,21 @@ for _, row in df.iterrows():
         github_link = row.iloc[1]
 
         # ChatGPT prompt
-        prompt = f"""Please classify the project's funding model based on its GitHub repository, white paper, CoinMarketCap, and official website (if available). 
-        Respond in the following format (include only applicable funding models):
-        - Public Token Sale: [Yes/No]
-        - Product/Service Sales Income: [Yes/No]
-        - Donations: [Yes/No]
-        - Crowdfunding Without Token: [Yes/No]
+        prompt = f"""First, review each project's GitHub repository, white paper, CoinMarketCap profile, and official website (if available). 
+        Based on this information and documentation, classify each project's funding model (choose from the options below and list all applicable primary funding models):
+        - Public Token Sale
+        - Crowdfunding Without Token
+        - Product/Service Sales Income
+        - Donations
+        - Others
 
+        Definitions:
+        - Donations: A gift of money, goods, services, or time made to an organization by an individual or entity without expecting anything in return.
+        - Crowdfunding Without Token: Funding a project or venture by raising money from a large number of people, typically via the internet.
+        Carefully distinguish between these two funding models.
+        
+        Please list all applicable funding models, as more than one may apply.
+        
         Project: {project_name}
         Link: {github_link}
         """
@@ -59,11 +67,12 @@ for _, row in df.iterrows():
             "Public Token Sale": 0,
             "Crowdfunding Without Token": 0,
             "Product/Service Sales Income": 0,
-            "Donations": 0
+            "Donations": 0,
+            "Others": 0
         }
 
         for model in funding_models.keys():
-            if f"{model}: Yes" in response:
+            if f"{model}" in response:
                 funding_models[model] = 1
 
         # Append to results
@@ -90,11 +99,11 @@ for _, row in df.iterrows():
             "Donations": 0,
         })
 
-# Save results to Excel
+# Save results to CSV
 try:
-    output_file = "your output file path here"
+    output_file = "YOUR CSV OUTPUT FILE PATH HERE"
     output_df = pd.DataFrame(results)
-    output_df.to_excel(output_file, index=False)
+    output_df.to_csv(output_file, index=False)
     print(f"Output saved to {output_file}")
 except Exception as e:
     print(f"Error saving output file: {e}")
