@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load both CSV files
-ground_truth = pd.read_csv('/Users/winniewei/Downloads/actual_funding_model - Sheet1 (8).csv')
-ai_classified = pd.read_csv('/Users/winniewei/FinTech_research/funding_model_temp_0_results.csv')
+ground_truth = pd.read_csv('ground truth input file path')
+ai_classified = pd.read_csv('ai classified input file path')
 
 funding_labels = [
     'Public Token Sale',
