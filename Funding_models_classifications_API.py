@@ -4,16 +4,17 @@ import os
 import time
 
 # Load API key securely
-openai.api_key = "YOUR API KEY HERE"
+openai.api_key = "your api key" 
 
 def query_chatgpt(prompt):
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4o",
+            model="gpt-4.1",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            temperature=0
         )
         return response['choices'][0]['message']['content']
     except Exception as e:
@@ -21,28 +22,44 @@ def query_chatgpt(prompt):
         return "No response"
 
 # Read CSV input with error handling
+input_path = "your csv input file path"
+
 try:
-    input_file = "YOUR CSV INPUT FILE PATH HERE"
-    df = pd.read_csv(input_file)
-except FileNotFoundError:
-    print(f"Error: Input file not found at {input_file}")
-    exit()
-except Exception as e:
-    print(f"Error reading input file: {e}")
-    exit()
+    df = pd.read_csv(input_path)
+except Exception as exc:
+    raise SystemExit(f"  Failed to load {input_path}: {exc}")
 
-# Output DataFrame
+blank_model_flags = {
+    "Public Token Sale": 0,
+    "Crowdfunding Without Token": 0,
+    "Product/Service Sales Income": 0,
+    "Donations": 0,
+    "Others": 0, 
+}
+
 results = []
+start_time = time.time()
 
-# Process each project
-for _, row in df.iterrows():
+for idx, row in df.iterrows():
+    ProjectName = row["ProjectName"]
+    GithubLink = row["GithubLink"]
+
+    print(f"\n Processing ({idx + 1}/{len(df)}): {GithubLink}")
+
+    # ETA estimate
+    elapsed = time.time() - start_time
+    avg_time = elapsed / (idx + 1)
+    remaining = avg_time * (len(df) - (idx + 1))
+    print(f" Estimated time remaining: {int(remaining)}s")
+
     try:
-        project_name = row.iloc[0]
-        github_link = row.iloc[1]
+        prompt = f"""
+First, review the project's GitHub repository (and any linked docs) at:
+{GithubLink}
 
-        # ChatGPT prompt
-        prompt = f"""First, review each project's GitHub repository, white paper, CoinMarketCap profile, and official website (if available). 
-        Based on this information and documentation, classify each project's funding model (choose from the options below and list all applicable primary funding models):
+Based on all publicly available material, classify **every** relevant funding model category that fits the project.  
+Use ONLY the labels below and mark every one that applies (0/1 is fine):
+
         - Public Token Sale
         - Crowdfunding Without Token
         - Product/Service Sales Income
@@ -54,56 +71,42 @@ for _, row in df.iterrows():
         - Crowdfunding Without Token: Funding a project or venture by raising money from a large number of people, typically via the internet.
         Carefully distinguish between these two funding models.
         
-        Please list all applicable funding models, as more than one may apply.
-        
-        Project: {project_name}
-        Link: {github_link}
-        """
-        
-        response = query_chatgpt(prompt)
+Return your answer as a simple bullet list or CSV line of the labels that apply.
+"""
 
-        # Parse response
-        funding_models = {
-            "Public Token Sale": 0,
-            "Crowdfunding Without Token": 0,
-            "Product/Service Sales Income": 0,
-            "Donations": 0,
-            "Others": 0
-        }
+        reply = query_chatgpt(prompt)
 
-        for model in funding_models.keys():
-            if f"{model}" in response:
-                funding_models[model] = 1
+        model_flags = blank_model_flags.copy()
+        for label in model_flags:
+            if label.lower() in reply.lower():
+                model_flags[label] = 1
 
-        # Append to results
         results.append({
-            "Project Name": project_name,
-            "GitHub Link": github_link,
-            "Public Token Sale": funding_models["Public Token Sale"],
-            "Crowdfunding Without Token": funding_models["Crowdfunding Without Token"],
-            "Product/Service Sales Income": funding_models["Product/Service Sales Income"],
-            "Donations": funding_models["Donations"],
+            "GithubLink": GithubLink,
+            "ProjectName": ProjectName,
+            **model_flags
         })
 
-        # Delay to handle rate limits
+        # Autosave progress every 10 rows
+        if (idx + 1) % 10 == 0:
+            pd.DataFrame(results).to_csv("intermediate_output.csv", index=False)
+            print("💾 Progress saved to intermediate_output.csv")
+
         time.sleep(1)
 
-    except Exception as e:
-        print(f"Error processing project {project_name}: {e}")
+    except Exception as exc:
+        print(f" Error on {GithubLink}: {exc}")
         results.append({
-            "Project Name": project_name,
-            "GitHub Link": github_link,
-            "Public Token Sale": 0,
-            "Crowdfunding Without Token": 0,
-            "Product/Service Sales Income": 0,
-            "Donations": 0,
+            "GithubLink": GithubLink,
+            "ProjectName": ProjectName,
+            **{k: 0 for k in blank_model_flags}
         })
 
-# Save results to CSV
+# Save final results
+output_path = "your output file path" 
 try:
-    output_file = "YOUR CSV OUTPUT FILE PATH HERE"
-    output_df = pd.DataFrame(results)
-    output_df.to_csv(output_file, index=False)
-    print(f"Output saved to {output_file}")
-except Exception as e:
-    print(f"Error saving output file: {e}")
+    pd.DataFrame(results).to_csv(output_path, index=False)
+    print(f"\n Final output saved to {output_path}")
+except Exception as exc:
+    print(f" Could not save final CSV: {exc}")
+
