@@ -1,86 +1,141 @@
-# README
+# OSS Project Classification Using ChatGPT
 
-We first attempted to filter out open-source software (OSS) projects that had not been active for a long time from a pool of 6,000 OSS projects. Using the GitHub API endpoint, we determined the duration distribution and plotted four types of graphs for these projects:
+This project explores using AI to classify open-source software (OSS) projects, focusing on funding models, governance models, and application types. We used ChatGPT models (GPT-4 and GPT-4.1) alongside manual verification processes and confusion matrix evaluation to measure performance and accuracy.
+
+---
+
+## 1. Initial Filtering Attempt
+
+We first attempted to filter out inactive OSS projects from a pool of **6,000 projects** using the GitHub API. We plotted the duration distribution and visualized:
+
 1. All projects without filters.
-2. Projects with a 30-day filter.
-3. Projects with a 60-day filter.
-4. Projects with a 90-day filter.
+2. Projects active within the past 30 days.
+3. Projects active within the past 60 days.
+4. Projects active within the past 90 days.
 
-However, we ultimately abandoned this approach due to survivorship bias and the surge in cryptocurrency activity in 2020.
-
----
-
-Next, we analyzed **600 projects** using ChatGPT for two distinct AI scenarios:
-1. One with a framework providing specific classification key terms for ChatGPT to select from.
-2. Another without the framework, where ChatGPT generated classifications independently before sorting them into given categories.
-
-We compared the classification results from both scenarios with manually collected classifications of over 600 OSS projects from the summer. The framework-based scenario resulted in a following accuracy rates:
-- **Funding model accuracy rate**: 73%.
-- **Governance model accuracy rate**: 95%.
-- **Project type accuracy rate**: 69%.
+We abandoned this filtering approach due to survivorship bias and a spike in crypto activity post-2020.
 
 ---
 
-## Accuracy and Verification
+## 2. ChatGPT Classification Scenarios
 
-To ensure the accuracy of the manually collected classifications:
-- We double-checked **60 projects**, 46 of which had clear classifications.
-- A **confusion matrix** (Figure 1) was created, where:
-  - The y-axis represents the actual classifications.
-  - The x-axis represents the AI classifications.
-  - Diagonal entries show correctly classified projects.
+We analyzed **600 projects** using ChatGPT under two scenarios:
 
-The AI correctly classified **50%** of the projects, with the highest number of accurate classifications in the "Product/Service Sales Income" category. Most classifications clustered around the diagonal.
+- **With Framework**: ChatGPT classified projects using predefined key terms.
+- **Without Framework**: ChatGPT classified projects freely, later mapped to our categories.
 
----
+### Accuracy Results (Framework Scenario):
 
-## ChatGPT-4 Classification Process
+- **Funding Model Accuracy**: 73%
+- **Governance Model Accuracy**: 95%
+- **Project Type Accuracy**: 69%
 
-We used **ChatGPT-4** to classify the funding models of **516 manually collected OSS projects**. These projects were submitted to ChatGPT in **batches of 12**, with project names and GitHub links provided for classification. Clear instructions were given, including a list of funding model categories for ChatGPT to choose from.
-
-### Challenges and Improvements
-- After processing 3–4 batches, ChatGPT often classified all projects under an "unspecified" category.
-- We reiterated the instructions, which improved accuracy upon reclassification.
-- Weighted dual classifications were used, allowing certain projects to have multiple classifications.
-
-The AI classification accuracy was **47.4%** (Figure 2).
+These were compared against **over 600 manually collected classifications** from the summer.
 
 ---
 
-## Prompt Refinement
+## 3. Accuracy and Verification
 
-To address mismatches, particularly between **"Donations"** and **"Crowdfunding Without Token"**, we enhanced ChatGPT-4 prompts by including definitions for both categories. Each message included the following prompt:
-First, review each project's GitHub repository, white paper, CoinMarketCap profile, and official website (if available). Based on this information and documentation, classify each project's funding model (choose from the options below and list all applicable primary funding models): Public Token Sale, Crowdfunding Without Token, Product/Service Sales Income, Donations, and Others. Definitions: Donations: A gift of money, goods, services, or time made to an organization by an individual or entity without expecting anything in return.
-Crowdfunding Without Token: Funding a project or venture by raising money from a large number of people, typically via the internet.
-Carefully distinguish between these two funding models. Please list all applicable funding models, as more than one may apply.
+We double-checked **60 projects**, confirming **46 clear classifications**.
 
+A **confusion matrix** was generated:
+- Y-axis: Actual classifications
+- X-axis: AI classifications
+- Diagonal entries represent correct classifications
 
----
-
-## Updated Results
-
-After improving the prompt:
-- A weighted confusion matrix improved the accuracy rate to **49%**.
-- Another matrix (Figure 4) allowing overlapping models increased accuracy to **53.1%**.
-- For **45 projects** analyzed individually, we achieved a similarity rate of **70.6%** using **Manhattan Distance**.
-
-For larger batches:
-- **200 projects**: Accuracy rate of **69.12%**.
-- **1,000 projects**: Processing 5 projects per batch using ChatGPT-4 API manually.
+- **Baseline AI Accuracy**: 50%
+- The highest number of correct classifications appeared in the **"Product/Service Sales Income"** category.
 
 ---
 
-## Automation 
+## 4. ChatGPT-4 Classification Process
 
-To automate classification:
-1. **API-Based Automation**: Used ChatGPT-3.5 Turbo.
-2. **Selenium Automation**: Automated ChatGPT-4 using a Google Chrome driver.
+We classified **516 manually collected OSS projects** using ChatGPT-4:
 
-### Reference Files
-- `Funding_models_classifications`: API-based automation using GPT-3.5.
-- `Funding_models_classifications_Selenium`: Automation using Selenium.
+- **Batch size**: 12 projects per submission
+- **Instructions**: Project name, GitHub link, funding model options provided
+
+### Observations:
+- After 3–4 batches, ChatGPT often defaulted to "unspecified"
+- Reiterating instructions improved accuracy
+- Dual weighted classifications were introduced for multi-faceted projects
+
+- **Initial AI Accuracy**: 47.4%
 
 ---
-## Note 
 
-- One of the challenges we encountered was related to sending multiple project prompts in the same ChatGPT session. This often resulted in inappropriate responses for the classification of funding models. For instance, batches of projects would sometimes not be classified under any of the predefined funding models, leading to inconsistencies. To address this, we ensured that each batch was submitted in a new, isolated chat session, which helped mitigate the issue and improve classification accuracy.
+## 5. Prompt Refinement for Improved Accuracy
+
+To reduce misclassification between **"Donations"** and **"Crowdfunding Without Token"**, we refined the prompts with clear definitions and classification instructions.
+
+> “Carefully distinguish between:  
+> - **Donations**: A gift given without expecting a return  
+> - **Crowdfunding Without Token**: Raising money from a large number of people online”
+
+After prompt refinement:
+- **Weighted Accuracy**: 49%
+- **Overlapping Model Accuracy**: 53.1%
+- **Individual Project Similarity (Manhattan Distance)**: 70.6% for 45 projects
+
+---
+
+## 6. Scaling Up Classification
+
+- **200 Projects**: 69.12% accuracy (post-refinement)
+- **1,000 Projects**: Classified in batches of 5 using ChatGPT-4 API manually
+
+---
+
+## 7. Automation Approaches
+
+1. **API-Based Automation**:
+   - Using GPT-3.5 Turbo
+   - Files: `Funding_models_classifications`
+
+2. **Selenium Automation**:
+   - Automating GPT-4 through Google Chrome driver
+   - Files: `Funding_models_classifications_Selenium`
+
+---
+
+## 8. ChatGPT-4.1 Model with Temperature 0
+
+We further experimented with **ChatGPT-4.1** using **temperature = 0** for deterministic, fact-based responses.
+
+### Funding Model Classification (450 OSS Projects):
+- **Fractionally Weighted Accuracy**: 39.71%
+- **Containment Accuracy (True Label Appears in AI Labels)**: 83.76%
+- *(Significantly higher containment compared to GPT-4 with temperature 1: ~69–70% accuracy)*  
+- [Reference: SSRN Appendix B](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5054880)  
+- Code: `confusion_matrix_funding_models.py`
+
+### Project Type Classification (450 OSS Projects):
+- **Fractionally Weighted Accuracy**: 6.99%
+- **Containment Accuracy**: 43.78%  
+- Code: `confusion_matrix_project_type.py`
+
+### Governance Type Classification (450 OSS Projects):
+- **Fractionally Weighted Accuracy**: 31.83%
+- **Containment Accuracy**: 45.62%  
+- Code: `confusion_matrix_project_type.py`, `confusion_matrix_funding_models.py`
+
+**Note**: Temperature 0 reduced randomness and significantly improved containment accuracy, though raw accuracy varied.
+
+---
+
+## 9. Best Practices Learned
+
+- Submitting multiple projects in a single ChatGPT session may reduce classification quality
+-  **Recommendation**: Use isolated sessions per batch for more reliable results
+
+---
+
+## 10. Repository Structure
+
+- `confusion_matrix_funding_models.py`: Funding model classification accuracy + confusion matrix
+- `confusion_matrix_project_type.py`: Project type & governance classification accuracy
+- `Funding_models_classifications`: GPT-3.5 Turbo API-based automation
+- `Funding_models_classifications_Selenium`: Selenium-based GPT-4 automation
+
+
+
