@@ -50,7 +50,7 @@ A **confusion matrix** was generated:
 
 ## 4. ChatGPT-4 Classification Process
 
-We classified **516 manually collected OSS projects** using ChatGPT-4:
+We classified **516 manually collected OSS projects** for their funding models using ChatGPT-4:
 
 - **Batch size**: 12 projects per submission
 - **Instructions**: Project name, GitHub link, funding model options provided
@@ -69,12 +69,12 @@ We classified **516 manually collected OSS projects** using ChatGPT-4:
 To reduce misclassification between **"Donations"** and **"Crowdfunding Without Token"**, we refined the prompts with clear definitions and classification instructions.
 
 > “Carefully distinguish between:  
-> - **Donations**: A gift given without expecting a return  
-> - **Crowdfunding Without Token**: Raising money from a large number of people online”
+> - **Donations**: A gift of money, goods, services, or time made to an organization by an individual or entity without expecting anything in return.
+> - **Crowdfunding Without Token**: Funding a project or venture by raising money from a large number of people, typically via the internet.
 
 After prompt refinement:
-- **Weighted Accuracy**: 49%
-- **Overlapping Model Accuracy**: 53.1%
+- **Weighted Accuracy**: 49%, 1.6% of increase compared with initial AI Accuracy. 
+- **Containment Accuracy (True Label Appears in AI Labels)**: 53.1%
 - **Individual Project Similarity (Manhattan Distance)**: 70.6% for 45 projects
 
 ---
@@ -89,24 +89,23 @@ After prompt refinement:
 ## 7. Automation Approaches
 
 1. **API-Based Automation**:
-   - Using GPT-3.5 Turbo
-   - Files: `Funding_models_classifications`
+   - Using GPT-4
+   - Code File: `Funding_models_classifications`
 
 2. **Selenium Automation**:
    - Automating GPT-4 through Google Chrome driver
-   - Files: `Funding_models_classifications_Selenium`
+   - Code File: `Funding_models_classifications_Selenium`
 
 ---
 
 ## 8. ChatGPT-4.1 Model with Temperature 0
 
-We further experimented with **ChatGPT-4.1** using **temperature = 0** for deterministic, fact-based responses.
+After reviewing paper [Reference: SSRN Appendix B](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5054880), we learned that lowering the GPT temperature from 1 to 0 yields more accurate, deterministic, and fact-based responses. Based on this insight, we re-ran the classification using the ChatGPT-4.1 model.
 
 ### Funding Model Classification (450 OSS Projects):
 - **Fractionally Weighted Accuracy**: 39.71%
 - **Containment Accuracy (True Label Appears in AI Labels)**: 83.76%
 - *(Significantly higher containment compared to GPT-4 with temperature 1: ~69–70% accuracy)*  
-- [Reference: SSRN Appendix B](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5054880)  
 - Code: `confusion_matrix_funding_models.py`
 
 ### Project Type Classification (450 OSS Projects):
@@ -133,7 +132,8 @@ We further experimented with **ChatGPT-4.1** using **temperature = 0** for deter
 ## 10. Repository Structure
 
 - `confusion_matrix_funding_models.py`: Funding model classification accuracy + confusion matrix
-- `confusion_matrix_project_type.py`: Project type & governance classification accuracy
+- `confusion_matrix_project_type.py`: Project type classification accuracy + confusion matrix
+- `confusion_matrix_governance_model.py`: Project governance classification accuracy + confusion matrix
 - `Funding_models_classifications`: GPT-3.5 Turbo API-based automation
 - `Funding_models_classifications_Selenium`: Selenium-based GPT-4 automation
 
