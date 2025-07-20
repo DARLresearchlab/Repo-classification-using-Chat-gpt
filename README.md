@@ -108,14 +108,14 @@ After reviewing paper [Reference: SSRN Appendix B](https://papers.ssrn.com/sol3/
 - *(Significantly higher containment compared to GPT-4 with temperature 1: ~69–70% accuracy)*  
 - Code: `confusion_matrix_funding_models.py`
 
-### Project Type Classification (450 OSS Projects):
-- **Fractionally Weighted Accuracy**: 6.99%
-- **Containment Accuracy**: 43.78%  
+### Project Type Classification (490 OSS Projects):
+- **Fractionally Weighted Accuracy**: 22.87%
+- **Containment Accuracy**: 51.42%  
 - Code: `confusion_matrix_project_type.py`
 
 ### Governance Type Classification (450 OSS Projects):
-- **Fractionally Weighted Accuracy**: 31.83%
-- **Containment Accuracy**: 45.62%  
+- **Fractionally Weighted Accuracy**: 30.34%
+- **Containment Accuracy**: 53.72%  
 - Code: `confusion_matrix_project_type.py`, `confusion_matrix_funding_models.py`
 
 **Note**: Temperature 0 reduced randomness and significantly improved containment accuracy, though raw accuracy varied.
