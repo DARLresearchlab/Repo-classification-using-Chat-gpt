@@ -105,17 +105,23 @@ After reviewing paper [Reference: SSRN Appendix B](https://papers.ssrn.com/sol3/
 ### Funding Model Classification (450 OSS Projects):
 - **Fractionally Weighted Accuracy**: 39.71%
 - **Containment Accuracy (True Label Appears in AI Labels)**: 83.76%
-- *(Significantly higher containment compared to GPT-4 with temperature 1: ~69–70% accuracy)*  
+- *(Significantly higher containment compared to GPT-4 with temperature 1: ~69–70% accuracy)*
+- **Micro F1 score**: 0.5042
+- **Weighted F1 Score**: 0.5341
 - Code: `confusion_matrix_funding_models.py`
 
 ### Project Type Classification (490 OSS Projects):
 - **Fractionally Weighted Accuracy**: 22.87%
-- **Containment Accuracy**: 51.42%  
+- **Containment Accuracy**: 51.42%
+- **Micro F1 score**: 0.3243
+- **Weighted F1 Score**: 0.4535
 - Code: `confusion_matrix_project_type.py`
 
 ### Governance Type Classification (450 OSS Projects):
 - **Fractionally Weighted Accuracy**: 30.34%
-- **Containment Accuracy**: 53.72%  
+- **Containment Accuracy**: 53.72%
+- **Micro F1 score**: 0.1512
+- **Weighted F1 Score**: 0.1268
 - Code: `confusion_matrix_project_type.py`, `confusion_matrix_funding_models.py`
 
 **Note**: Temperature 0 reduced randomness and significantly improved containment accuracy, though raw accuracy varied.
