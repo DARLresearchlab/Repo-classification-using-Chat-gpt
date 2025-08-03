@@ -68,7 +68,7 @@ We classified **516 manually collected OSS projects** for their funding models u
 
 To reduce misclassification between **"Donations"** and **"Crowdfunding Without Token"**, we refined the prompts with clear definitions and classification instructions.
 
-> “Carefully distinguish between:  
+> Carefully distinguish between:  
 > - **Donations**: A gift of money, goods, services, or time made to an organization by an individual or entity without expecting anything in return.
 > - **Crowdfunding Without Token**: Funding a project or venture by raising money from a large number of people, typically via the internet.
 
