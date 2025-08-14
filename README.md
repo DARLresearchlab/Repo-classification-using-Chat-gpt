@@ -127,15 +127,36 @@ After reviewing paper [Reference: SSRN Appendix B](https://papers.ssrn.com/sol3/
 **Note**: Temperature 0 reduced randomness and significantly improved containment accuracy, though raw accuracy varied.
 
 ---
+## 9. Implementing Chain of thoughts
 
-## 9. Best Practices Learned
+### Funding Model Classification (450 OSS Projects):
+- **Fractionally Weighted Accuracy**: 30.8413%
+- **Containment Accuracy (True Label Appears in AI Labels)**: 86.3962%
+- **Micro F1 score**: 0.4399
+- **Weighted F1 Score**: 0.5077
+- Code: `confusion_matrix_funding_models.py`
+
+### Project Type Classification (490 OSS Projects):
+- **Fractionally Weighted Accuracy**: 8.1616%
+- **Containment Accuracy**: 61.8367%
+- **Micro F1 score**: 0.1451
+- **Weighted F1 Score**: 0.4029
+
+### Governance Type Classification (450 OSS Projects):
+- **Fractionally Weighted Accuracy**: 16.45%
+- **Containment Accuracy**: 93.16%
+- **Micro F1 score**: 0.3004
+- **Weighted F1 Score**: 0.3665
+
+
+## 10. Best Practices Learned
 
 - Submitting multiple projects in a single ChatGPT session may reduce classification quality
 -  **Recommendation**: Use isolated sessions per batch for more reliable results
 
 ---
 
-## 10. Repository Structure
+## 11. Repository Structure
 
 - `confusion_matrix_funding_models.py`: Funding model classification accuracy + confusion matrix
 - `confusion_matrix_project_type.py`: Project type classification accuracy + confusion matrix
